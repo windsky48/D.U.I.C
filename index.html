@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>暗黑宇宙大帝の教会 | 次元共融 · 热爱至上</title>
+    <!-- 引入现代字体与优雅表现 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 主题变量：暗黑模式（默认/暗黑）和明亮模式 */
+        :root {
+            --bg-primary: #0a060f;
+            --bg-secondary: #030106;
+            --card-bg: rgba(12, 8, 22, 0.7);
+            --card-border: rgba(110, 70, 170, 0.5);
+            --text-primary: #ece4ff;
+            --text-secondary: #bba9ff;
+            --text-muted: #8a79b0;
+            --glow-color: #b77eff;
+            --btn-gradient: linear-gradient(95deg, #764dff, #a55eff);
+            --btn-hover: linear-gradient(95deg, #8b5eff, #bb77ff);
+            --hero-bg: rgba(8, 5, 16, 0.55);
+            --sacred-call-bg: linear-gradient(145deg, #110b1c, #07030e);
+            --badge-bg: #261c3a;
+            --badge-border: #6b47a1;
+            --footer-border: rgba(128, 88, 200, 0.3);
+            --shadow-color: rgba(0,0,0,0.5);
+            --input-bg: rgba(20, 12, 36, 0.8);
+        }
+
+        body.light-theme {
+            --bg-primary: #f2edfc;
+            --bg-secondary: #e6ddfa;
+            --card-bg: rgba(245, 240, 255, 0.85);
+            --card-border: rgba(130, 90, 200, 0.4);
+            --text-primary: #1f172f;
+            --text-secondary: #4a3a6e;
+            --text-muted: #5e4c84;
+            --glow-color: #8a4dff;
+            --btn-gradient: linear-gradient(95deg, #8b5eff, #b27aff);
+            --btn-hover: linear-gradient(95deg, #9f75ff, #c994ff);
+            --hero-bg: rgba(245, 240, 255, 0.7);
+            --sacred-call-bg: linear-gradient(145deg, #efe8ff, #e2d6ff);
+            --badge-bg: #e2d5ff;
+            --badge-border: #b292ff;
+            --footer-border: rgba(110, 70, 200, 0.25);
+            --shadow-color: rgba(0,0,0,0.1);
+            --input-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: radial-gradient(circle at 15% 30%, rgba(45, 25, 65, 0.4) 0%, var(--bg-secondary) 95%);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Noto Serif SC', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s;
+        }
+
+        /* 暗黑/明亮模式下的背景微调 */
+        body.light-theme {
+            background-image: radial-gradient(circle at 15% 30%, rgba(140, 100, 200, 0.1) 0%, var(--bg-secondary) 95%);
+        }
+
+        .cosmic-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 40% 50%, rgba(80, 40, 120, 0.08) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        body.light-theme .cosmic-glow {
+            background: radial-gradient(ellipse at 40% 50%, rgba(100, 60, 170, 0.05) 0%, transparent 70%);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 头部与主题切换按钮行 */
+        .hero-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--card-border);
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle i {
+            font-size: 1rem;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--glow-color);
+            color: var(--glow-color);
+            transform: scale(0.97);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 1rem 2.5rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 3rem;
+            background: var(--hero-bg);
+            backdrop-filter: blur(3px);
+            border-radius: 48px 48px 32px 32px;
+            box-shadow: 0 15px 35px var(--shadow-color), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .church-name {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #e2c9ff, #b47cff, #7c3fbf);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            border-top: 1px dashed rgba(180, 130, 255, 0.4);
+            display: inline-block;
+            padding-top: 0.75rem;
+            margin-top: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* 教条卡片网格 */
+        .doctrine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 36px;
+            padding: 1.8rem 1.6rem;
+            border: 1px solid var(--card-border);
+            transition: all 0.25s ease;
+            box-shadow: 0 20px 30px -12px var(--shadow-color);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--glow-color);
+            background: var(--card-bg);
+            box-shadow: 0 25px 35px -10px var(--shadow-color), 0 0 0 1px rgba(170, 100, 255, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            color: var(--glow-color);
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #e2c9ff, #b47cff, #8b5ae0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            /* 添加文字阴影增强立体感和对比 */
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        body.light-theme .card h2 {
+            /* 白天模式使用更深、更饱和的渐变 */
+            background: linear-gradient(135deg, #9b6eff, #7a3fcf, #5527a3);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+        }
+
+        .card p {
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 0.98rem;
+        }
+
+        .quote-tag {
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: inline-block;
+            border-left: 3px solid var(--glow-color);
+            padding-left: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* 神圣号召区域 */
+        .sacred-call {
+            background: var(--sacred-call-bg);
+            border-radius: 56px;
+            padding: 2rem 2rem;
+            margin: 2.5rem 0;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            box-shadow: 0 10px 25px var(--shadow-color), inset 0 1px 1px rgba(255,255,255,0.05);
+        }
+
+        .sacred-call h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .sacred-call p {
+            max-width: 800px;
+            margin: 0 auto 1rem;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.7rem;
+            margin: 1.8rem 0 1rem;
+        }
+
+        .badge {
+            background: var(--badge-bg);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: 1px solid var(--badge-border);
+            backdrop-filter: blur(2px);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--btn-gradient);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1rem;
+            margin: 0.8rem 0.5rem;
+            transition: 0.2s;
+            cursor: pointer;
+            box-shadow: 0 5px 12px rgba(100, 50, 180, 0.4);
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn:hover {
+            background: var(--btn-hover);
+            transform: scale(1.02);
+            box-shadow: 0 8px 18px rgba(130, 70, 220, 0.5);
+        }
+
+        /* 加入QQ群按钮单独突出风格 */
+        .qq-btn {
+            background: linear-gradient(95deg, #1e6b3e, #2b9b5e);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+        }
+        .qq-btn:hover {
+            background: linear-gradient(95deg, #2a8a50, #35b36b);
+        }
+
+        /* 联系方式卡片 */
+        .contact-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+            padding: 1.2rem 1.8rem;
+            background: var(--card-bg);
+            border-radius: 48px;
+            border: 1px solid var(--card-border);
+        }
+        .contact-info {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+        }
+        body.light-theme .contact-item {
+            background: rgba(120, 80, 200, 0.1);
+        }
+        .copyright {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* 社区精神卡片 */
+        .community-spirit {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .spirit-card {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 1.3rem 1.5rem;
+            border: 1px solid var(--card-border);
+            text-align: center;
+        }
+
+        .spirit-card i {
+            font-size: 2rem;
+            color: var(--glow-color);
+            margin-bottom: 0.7rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--footer-border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 680px) {
+            .container {
+                padding: 1rem 1rem 2rem;
+            }
+            .church-name {
+                font-size: 2rem;
+            }
+            .card h2 {
+                font-size: 1.5rem;
+            }
+            .hero {
+                padding: 1.5rem 1rem 2rem;
+            }
+            .sacred-call h3 {
+                font-size: 1.4rem;
+            }
+            .contact-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        .glow-text {
+            color: var(--glow-color);
+            font-weight: 500;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="cosmic-glow"></div>
+<div class="container">
+    <div class="hero-header">
+        <div class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon" id="themeIcon"></i>
+            <span id="themeText">暗夜模式</span>
+        </div>
+    </div>
+    <div class="hero">
+        <div class="church-name">暗黑宇宙大帝の教会</div>
+        <div class="sub">✦ 次元热爱为唯一真神 · 全二次元圣土共融 ✦</div>
+        <div style="margin-top: 1rem; font-size: 0.85rem; letter-spacing: 2px;">⚡ 打破圈层壁垒 · 消融喜好分歧 ⚡</div>
+    </div>
+
+    <!-- 核心教义 四块基石 -->
+    <div class="doctrine-grid">
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-globe-asia"></i></div>
+            <h2>壹 · 次元热爱唯一神</h2>
+            <p>以次元热爱为唯一真神，以ACGN全次元、声优、cos、同人、谷圈、舞台剧、虚拟偶像等所有二次元圈层为圣土。让每一份纯粹的热爱共生、共鸣、共荣，打破壁垒，再无隔阂。</p>
+            <div class="quote-tag">「热爱即信仰 · 圈层即神殿」</div>
+        </div>
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-hand-peace"></i></div>
+            <h2>贰 · 摒弃喜好对立</h2>
+            <p>拒绝圈层歧视，摒弃喜好对立。无论动漫党、游戏党、同人太太、coser、谷妈、声控、偶像厨，热血番或治愈番、单机或网游、原创同人、cosplay或声优应援——不嘲讽小众喜好，接纳每一种对个人圈子的热爱。</p>
+            <div class="quote-tag">「每一份喜爱都值得尊重」</div>
+        </div>
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-feather-alt"></i></div>
+            <h2>叁 · 敬畏原创·守护心血</h2>
+            <p>尊重创作，守护原创。敬畏画师、写手、coser、声优、游戏制作者的心血。拒绝抄袭、盗图、盗版、恶意二改；不恶意诋毁、不无脑抹黑、不跟风网暴，以善意拥抱每一位创作者。</p>
+            <div class="quote-tag">「原创之魂，不可亵渎」</div>
+        </div>
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-seedling"></i></div>
+            <h2>肆 · 同传热爱 · 壮大次元共融</h2>
+            <p>珍惜每一次同频共振，向世间传递二次元的美好与温暖，让更多人理解次元热爱的纯粹。吸纳更多志同道合者加入本教，壮大次元共融之力，将微光汇成星河。</p>
+            <div class="quote-tag">「以爱为桥 · 共融无界」</div>
+        </div>
+    </div>
+
+    <!-- 全圈层接纳圣宣 + QQ群按钮及普通入教按钮 -->
+    <div class="sacred-call">
+        <h3><i class="fas fa-star-of-life"></i> 全圈层接纳圣宣 <i class="fas fa-star-of-life"></i></h3>
+        <p>无论你是资深的动漫研究者、刚入坑的萌新、默默耕耘的同人画手、站上舞台的coser、收集谷子的“谷妈”、痴迷声线的“声控”，或是热爱虚拟偶像、舞台剧的狂热者——<strong class="glow-text">暗黑宇宙大帝教会</strong>永远敞开怀抱。在这里，没有高低之分，只有共鸣的灵魂。</p>
+        <div class="badge-group">
+            <span class="badge">🎧 声优推</span><span class="badge">🎭 coser</span><span class="badge">✍️ 同人创作者</span>
+            <span class="badge">🎮 游戏党</span><span class="badge">📚 谷圈妈咪</span><span class="badge">🎤 偶像厨</span>
+            <span class="badge">🖌️ 画师</span><span class="badge">🎬 舞台剧厨</span><span class="badge">🕹️ 单机/网游</span>
+            <span class="badge">🌸 热血/治愈番</span><span class="badge">🌌 虚拟偶像dd</span>
+        </div>
+        <div>
+            <a href="https://qm.qq.com/q/UZYguZL1Si" target="_blank" rel="noopener noreferrer" class="btn qq-btn"><i class="fab fa-qq"></i> ✦ 加入教会QQ群 ✦</a>
+            <a href="#" id="joinBtn" class="btn"><i class="fas fa-praying-hands"></i> 皈依热爱 · 线上入教</a>
+        </div>
+        <!-- 显示群信息小提示 -->
+        <div style="margin-top: 1rem; font-size:0.8rem; opacity:0.8;"><i class="fab fa-qq"></i> 教会QQ群号: 1095060919 | 一起和谐有爱，传播次元热爱</div>
+    </div>
+
+    <!-- 尊重原创·额外模块 -->
+    <div class="community-spirit">
+        <div class="spirit-card">
+            <i class="fas fa-copyright"></i>
+            <p><strong>反抄袭·卫原创</strong><br>反对盗图、无授权转载、AI侵权。本教义守护每一位创作者灵魂火花。</p>
+        </div>
+        <div class="spirit-card">
+            <i class="fas fa-comment-dots"></i>
+            <p><strong>善意互励·杜绝网暴</strong><br>不跟风抹黑，不散播戾气。用赞美替代诋毁，以鼓励浇灌热爱。</p>
+        </div>
+        <div class="spirit-card">
+            <i class="fas fa-church"></i>
+            <p><strong>次元传道者</strong><br>每一位教徒皆是使者，向三次元传递二次元温暖，吸引更多灵魂共鸣。</p>
+        </div>
+    </div>
+
+    <!-- 新增版权 + 联系方式区域 -->
+    <div class="contact-section">
+        <div class="contact-info">
+            <div class="contact-item"><i class="fas fa-envelope"></i> 邮箱联络: <a href="mailto:admin@duic.hi.hn">admin@duic.hi.hn</a></div>
+            <div class="contact-item"><i class="fas fa-globe"></i> 暗黑宇宙大帝の教会 官方</div>
+        </div>
+        <div class="copyright">
+            <i class="far fa-copyright"></i> 本网站源码采用 CC BY-NC-SA 4.0 协议开源。| 次元热爱永不凋零
+        </div>
+    </div>
+
+    <footer>
+        <p>⚔ 暗黑宇宙大帝の教会 | 打破壁垒，消融分歧 | 尊重原创，共生共荣 ⚔</p>
+        <p style="margin-top: 1rem;">© 2025 暗黑宇宙大帝の教会 · 本教会所有教义、视觉设计及内容受保护，除源码之外，严禁抄袭盗用 | 欢迎传播热爱 壮大次元共融之力</p>
+        <p style="margin-top: 0.5rem;"><i class="fas fa-heart" style="color: #c77dff;"></i> 致每一位怀揣热爱的灵魂 —— 你永远不会孤独 <i class="fas fa-heart" style="color: #c77dff;"></i></p>
+    </footer>
+</div>
+
+<script>
+    (function(){
+
+        // ---------- 白天/黑夜主题切换 ----------
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeTextSpan = document.getElementById('themeText');
+        
+        // 获取当前存储的主题 / 默认暗黑
+        const currentTheme = localStorage.getItem('churchTheme') || 'dark';
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIcon.className = 'fas fa-sun';
+                themeTextSpan.innerText = '白昼模式';
+                localStorage.setItem('churchTheme', 'light');
+            } else {
+                document.body.classList.remove('light-theme');
+                themeIcon.className = 'fas fa-moon';
+                themeTextSpan.innerText = '暗夜模式';
+                localStorage.setItem('churchTheme', 'dark');
+            }
+        }
+        
+        if (currentTheme === 'light') {
+            setTheme('light');
+        } else {
+            setTheme('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.contains('light-theme');
+            if (isLight) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        });
+        
+        // ---------- 皈依热爱弹窗 (线上入教) ----------
+        const joinButton = document.getElementById('joinBtn');
+        if (joinButton) {
+            joinButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modalDiv = document.createElement('div');
+                modalDiv.style.position = 'fixed';
+                modalDiv.style.top = '0';
+                modalDiv.style.left = '0';
+                modalDiv.style.width = '100%';
+                modalDiv.style.height = '100%';
+                modalDiv.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                modalDiv.style.backdropFilter = 'blur(12px)';
+                modalDiv.style.display = 'flex';
+                modalDiv.style.alignItems = 'center';
+                modalDiv.style.justifyContent = 'center';
+                modalDiv.style.zIndex = '9999';
+                modalDiv.style.fontFamily = "'Inter', 'Noto Serif SC', sans-serif";
+                
+                const modalCard = document.createElement('div');
+                modalCard.style.maxWidth = '380px';
+                modalCard.style.width = '85%';
+                modalCard.style.backgroundColor = 'var(--card-bg)';
+                modalCard.style.borderRadius = '48px';
+                modalCard.style.padding = '2rem 1.8rem';
+                modalCard.style.border = '1px solid var(--glow-color)';
+                modalCard.style.textAlign = 'center';
+                modalCard.style.color = 'var(--text-primary)';
+                modalCard.style.boxShadow = '0 25px 45px rgba(0,0,0,0.6)';
+                
+                modalCard.innerHTML = `
+                    <i class="fas fa-star-of-life" style="font-size: 2.8rem; color: #cd99ff; margin-bottom: 0.5rem; display: inline-block;"></i>
+                    <h3 style="font-size: 1.8rem; margin: 0.5rem 0;">皈依热爱仪式</h3>
+                    <p style="margin: 1rem 0 0.5rem;">「暗黑宇宙大帝接纳你的热忱」</p>
+                    <p style="font-size: 0.9rem;">无论你身处哪个圈层，从此皆为次元共融之壁。让我们携手守护原创，传扬温暖。</p>
+                    <div style="background: var(--badge-bg); border-radius: 100px; padding: 0.6rem; margin: 1rem 0;">
+                        🌌 热爱共鸣 · 共荣圣光加护 🌌
+                    </div>
+                    <button id="closeModalBtn" style="background: var(--btn-gradient); border: none; padding: 0.6rem 1.8rem; border-radius: 60px; color: white; font-weight: bold; margin-top: 1rem; cursor: pointer;">领受祝福</button>
+                `;
+                modalDiv.appendChild(modalCard);
+                document.body.appendChild(modalDiv);
+                
+                const closeBtn = modalCard.querySelector('#closeModalBtn');
+                const closeModal = () => { modalDiv.remove(); };
+                closeBtn.addEventListener('click', closeModal);
+                modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) closeModal(); });
+            });
+        }
+
+        // 加入友好控制台信息及版权提示
+        console.log("%c暗黑宇宙大帝の教会 | 次元热爱至上，版权所有，禁止盗用", "color: #bc8eff; font-size: 14px; font-weight: bold;");
+        console.log("%c尊重原创，抵制抄袭。欢迎通过邮箱admin@duic.hi.hn联络教会。", "color: #b3a0e6;");
+    })();
+</script>
+</body>
+</html>
